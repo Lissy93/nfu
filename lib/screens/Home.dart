@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import '../widgets/hello.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage(BuildContext context, {Key key, this.title}) : super(key: key);
   final String title;
 
   @override
@@ -28,13 +28,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            helloWidget(context),
             Text(
               'You have clicked the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+
           ],
         ),
       ),
