@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Day Counter',
       theme: ThemeData(
-        primarySwatch: Colors.lime,
+        primarySwatch: Colors.blue,
       ),
       home: MyHomePage(context, title: 'Flutter Demo Home Page'),
     );

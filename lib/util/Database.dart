@@ -27,7 +27,7 @@ class DBProvider {
           await db.execute("CREATE TABLE DayCount ("
               "id INTEGER PRIMARY KEY,"
               "title TEXT,"
-              "date TEXT,"
+              "date TEXT"
               ")");
         });
   }
@@ -36,11 +36,12 @@ class DBProvider {
     final db = await database;
     //get the biggest id in the table
     var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM DayCount");
-    int id = table.first["id"];
+    int id = table.first["id"] != null ?  table.first["id"] : 0;
+    
     //insert to the table using the new id
     var raw = await db.rawInsert(
         "INSERT Into DayCount (id,title,date)"
-            " VALUES (?,?,?,?)",
+            " VALUES (?,?,?)",
         [id, newDayCount.title, newDayCount.date]);
     return raw;
   }
