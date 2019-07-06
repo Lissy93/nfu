@@ -20,7 +20,7 @@ class DayCount {
   factory DayCount.fromMap(Map<String, dynamic> json) => new DayCount(
     id: json["id"],
     title: json["title"],
-    date: json["date"],
+    date: int.parse(json["date"]),
   );
 
   Map<String, dynamic> toMap() => {

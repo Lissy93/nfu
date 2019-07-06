@@ -37,7 +37,7 @@ class DBProvider {
     //get the biggest id in the table
     var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM DayCount");
     int id = table.first["id"] != null ?  table.first["id"] : 0;
-    
+
     //insert to the table using the new id
     var raw = await db.rawInsert(
         "INSERT Into DayCount (id,title,date)"
@@ -56,14 +56,14 @@ class DBProvider {
   getDayCount(int id) async {
     final db = await database;
     var res = await db.query("DayCount", where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? DayCount.fromMap(res.first) : null;
+    return res.isNotEmpty ? DayCount.fromMap(res.first) : null; 
   }
 
   Future<List<DayCount>> getAllDayCounts() async {
     final db = await database;
     var res = await db.query("DayCount");
     List<DayCount> list =
-    res.isNotEmpty ? res.map((c) => DayCount.fromMap(c)).toList() : [];
+      res.isNotEmpty ? res.map((c) => DayCount.fromMap(c)).toList() : [];
     return list;
   }
 

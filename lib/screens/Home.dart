@@ -61,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             );
           } else {
+            print('No data returned');
             return Center(child: CircularProgressIndicator());
           }
         },
