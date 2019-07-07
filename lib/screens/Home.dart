@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import '../models/DayCountModel.dart';
 import '../util/Database.dart';
+import '../widgets/DisplayDayCount.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage(BuildContext context, {Key key, this.title}) : super(key: key);
@@ -46,17 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onDismissed: (direction) {
                     // DBProvider.db.deleteClient(item.id);
                   },
-                  child: ListTile(
-                    title: Text(item.title),
-                    leading: Text(item.id.toString()),
-                    trailing: Checkbox(
-                      onChanged: (bool value) {
-                        // DBProvider.db.blockOrUnblock(item);
-                        setState(() {});
-                      },
-                      value: false,
-                    ),
-                  ),
+                  child: displayDayCount(context),
                 );
               },
             );

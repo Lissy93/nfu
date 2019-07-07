@@ -56,7 +56,7 @@ class DBProvider {
   getDayCount(int id) async {
     final db = await database;
     var res = await db.query("DayCount", where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? DayCount.fromMap(res.first) : null; 
+    return res.isNotEmpty ? DayCount.fromMap(res.first) : null;
   }
 
   Future<List<DayCount>> getAllDayCounts() async {
