@@ -74,7 +74,7 @@ class DBProvider {
 
   deleteAll() async {
     final db = await database;
-    db.rawDelete("Delete * from DayCount");
+    db.rawDelete("DELETE FROM DayCount");
   }
 
 }
