@@ -40,14 +40,14 @@ class _MyHomePageState extends State<MyHomePage> {
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                DayCount item = snapshot.data[index];
+                DayCount dayCountData = snapshot.data[index];
                 return Dismissible(
                   key: UniqueKey(),
                   background: Container(color: Colors.red),
                   onDismissed: (direction) {
                     // DBProvider.db.deleteClient(item.id);
                   },
-                  child: displayDayCount(context),
+                  child: displayDayCount(context, dayCountData),
                 );
               },
             );
@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+//          DBProvider.db.deleteAll();
           DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
           await DBProvider.db.insertDayCount(rnd);
           setState(() {});
