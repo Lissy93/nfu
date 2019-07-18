@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import '../screens/DayCountForm.dart';
 import '../models/DayCountModel.dart';
 import '../util/Database.dart';
 import '../widgets/DisplayDayCount.dart';
@@ -60,9 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
 //          DBProvider.db.deleteAll();
-          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
-          await DBProvider.db.insertDayCount(rnd);
-          setState(() {});
+//          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
+//          await DBProvider.db.insertDayCount(rnd);
+//          setState(() {});
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DayCountForm()),
+          );
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
