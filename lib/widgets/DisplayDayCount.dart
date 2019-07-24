@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:folding_cell/folding_cell.dart';
 import '../models/DayCountModel.dart';
+import '../util/Database.dart';
 import '../util/Helpers.dart';
 
+DayCount dayCount;
 
 Widget displayDayCount(BuildContext context, DayCount dayCountData) {
+  dayCount = dayCountData;
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
 //  var _foldingCellKey = new Key(dayCountData.id.toString());
   return GestureDetector(
@@ -12,7 +15,6 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData) {
         _foldingCellKey?.currentState?.toggleFold();
       },
     child: Container(
-//      color: Colors.pinkAccent,
       margin: new EdgeInsets.only(bottom: 10),
       padding: new EdgeInsets.all(10.0),
       child:
@@ -25,8 +27,7 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData) {
           padding: EdgeInsets.all(15),
           animationDuration: Duration(milliseconds: 300),
           borderRadius: 5,
-//          onPressed: () => _foldingCellKey?.currentState?.toggleFold(),
-          onOpen: () => print('cell opened'),
+          onOpen: () => print('cell opened'+dayCount.id.toString()),
           onClose: () => print('cell closed')
         ),
     )
@@ -65,7 +66,7 @@ Widget _buildDateDisplayWidget(context, bool open) {
         Column(
           children: <Widget>[
             Text(
-              'Smoke Free'+(open ? ' Since': ' For '),
+              dayCount.title+(open ? ' Since': ' For '),
             style: TextStyle(
                 color: Colors.deepPurple[100],
                 fontFamily: 'OpenSans',
@@ -93,9 +94,9 @@ Widget _buildDateDisplayWidget(context, bool open) {
   );
 }
 
-Widget _buildOptionsButtonWidget(String text, IconData icon) {
+Widget _buildOptionsButtonWidget(String text, IconData icon, Function action) {
   return FlatButton(
-    onPressed: () => {},
+    onPressed: action,
     color: Color(0xff8A28FF),
     padding: EdgeInsets.all(10.0),
     child: Row( // Replace with a Row for horizontal icon + text
@@ -121,10 +122,26 @@ Widget _buildOptionsButtonRowWidget() {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        _buildOptionsButtonWidget('Edit', Icons.edit),
-        _buildOptionsButtonWidget('Reset', Icons.update),
-        _buildOptionsButtonWidget('Delete', Icons.delete),
+        _buildOptionsButtonWidget('Edit', Icons.edit, openEdit),
+        _buildOptionsButtonWidget('Reset', Icons.update, resetDays),
+        _buildOptionsButtonWidget('Delete', Icons.delete, deleteItem),
       ],
     )
   );
+}
+
+
+deleteItem(){
+  DBProvider.db.deleteDayCount(0);
+////          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
+////          await DBProvider.db.insertDayCount(rnd);
+//          setState(() {});
+}
+
+openEdit() {
+  print('Open Edit Tapped');
+}
+
+resetDays() {
+
 }
