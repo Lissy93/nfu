@@ -96,17 +96,17 @@ Widget _buildDateDisplayWidget(context, bool open) {
 Widget _buildOptionsButtonWidget(String text, IconData icon) {
   return FlatButton(
     onPressed: () => {},
-    color: Colors.pink[700],
+    color: Color(0xff8A28FF),
     padding: EdgeInsets.all(10.0),
     child: Row( // Replace with a Row for horizontal icon + text
       children: <Widget>[
         Icon(
           icon,
-          color: Colors.white,
+          color: Colors.deepPurple[100],
         ),
         Text(
           text,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.deepPurple[100]),
 
         )
       ],
@@ -117,9 +117,8 @@ Widget _buildOptionsButtonWidget(String text, IconData icon) {
 Widget _buildOptionsButtonRowWidget() {
   return Container(
     color: Colors.blueGrey[100],
-    alignment: Alignment.bottomCenter,
+    alignment: Alignment.center,
     child: Row(
-//      color: Colors.cyanAccent,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _buildOptionsButtonWidget('Edit', Icons.edit),
