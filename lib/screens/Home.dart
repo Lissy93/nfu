@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import '../screens/DayCountForm.dart';
+import '../screens/DayCountScreen.dart';
 import '../models/DayCountModel.dart';
 import '../util/Database.dart';
 import '../widgets/DisplayDayCount.dart';
@@ -27,6 +27,13 @@ class _MyHomePageState extends State<MyHomePage> {
     DayCount(title: "Raouf", date: 1562147307,),
     DayCount(title: "Zaki", date: 1561974507,),
   ];
+
+  navigateToAddNewItem () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyCustomForm()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
 //          DBProvider.db.deleteAll();
-          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
-          await DBProvider.db.insertDayCount(rnd);
-          setState(() {});
-//
-//          Navigator.push(
-//            context,
-//            MaterialPageRoute(builder: (context) => DayCountForm()),
-//          );
+//          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
+//          await DBProvider.db.insertDayCount(rnd);
+//          setState(() {});
+          navigateToAddNewItem();
+
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
