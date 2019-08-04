@@ -15,8 +15,7 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData) {
         _foldingCellKey?.currentState?.toggleFold();
       },
     child: Container(
-      margin: new EdgeInsets.only(bottom: 10),
-      padding: new EdgeInsets.all(10.0),
+      padding: new EdgeInsets.all(5),
       child:
           SimpleFoldingCell(
           key: _foldingCellKey,
