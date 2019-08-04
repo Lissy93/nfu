@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 import '../models/DayCountModel.dart';
 import '../util/Helpers.dart';
 
@@ -42,40 +44,91 @@ class DayCountScreen extends State<MyCustomForm> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  new TextFormField(
-                    decoration: new InputDecoration(
-                      labelText: "Pick a name for your target",
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(
+                Padding (padding: EdgeInsets.all(6)),
+                SizedBox(
+                width: double.infinity,
+                  height: 60,
+                  child:
+                    new TextFormField(
+                      decoration: new InputDecoration(
+                        labelText: "Pick a name for your target",
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25),
+                          borderSide: new BorderSide(
+                          ),
                         ),
+                        //fillColor: Colors.green
                       ),
-                      //fillColor: Colors.green
+                      validator: (val) {
+                        if(val.length==0) {
+                          return 'Name cannot be empty';
+                        }else{
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      style: new TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontSize: 24,
+                      ),
                     ),
-                    validator: (val) {
-                      if(val.length==0) {
-                        return "Name cannot be empty";
-                      }else{
-                        return null;
-                      }
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    style: new TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 24,
-                    ),
-                  ),
-                  RaisedButton(
+                ),
+                  Padding (padding: EdgeInsets.all(12)),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child:
+                    OutlineButton(
+                      color: Colors.white,
+                      shape:
+                        new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(25)
+                        ),
+                      borderSide: BorderSide(color: Theme.of(context).accentColor ),
+                      splashColor: Colors.cyanAccent[100],
                       onPressed: () {
-                        if (_formKey.currentState.validate()) {
                           Scaffold.of(context)
                               .showSnackBar(
                               SnackBar(content: Text('Processing Data')));
-                        }
                       },
-                      child: Text('Submit'),
+                      child: Text(
+                        'Select Date',
+                        style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontSize: 24
+                        ),
+                      ),
                     ),
+                  ),
+                  Padding (padding: EdgeInsets.all(12)),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child:
+                      RaisedButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(25)
+                        ),
+                        color: Theme.of(context).accentColor,
+                        elevation: 4.0,
+                        splashColor: Colors.cyanAccent,
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            Scaffold.of(context)
+                                .showSnackBar(
+                                SnackBar(content: Text('Processing Data')));
+                          }
+                        },
+                        child: Text(
+                            'Save',
+                            style: TextStyle(
+                                fontFamily: 'OpenSans',
+                                fontSize: 24
+                            ),
+                        ),
+                      ),
+                  ),
                 ],
               ),
             ),
