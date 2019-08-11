@@ -88,9 +88,15 @@ class DayCountScreen extends State<MyCustomForm> {
                       borderSide: BorderSide(color: Theme.of(context).accentColor ),
                       splashColor: Colors.cyanAccent[100],
                       onPressed: () {
-                          Scaffold.of(context)
-                              .showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(2018, 3, 5),
+                            maxTime: new DateTime.now(),
+                            onChanged: (date) {
+                              print('change $date');
+                            }, onConfirm: (date) {
+                              print('confirm $date');
+                            }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                       child: Text(
                         'Select Date',
