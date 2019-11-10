@@ -5,17 +5,18 @@ import '../models/DayCountModel.dart';
 import '../util/Helpers.dart';
 
 // Create a Form widget.
-class MyCustomForm extends StatefulWidget {
+class DayCountFormState extends StatefulWidget {
   @override
   DayCountScreen createState() {
     return DayCountScreen();
   }
 }
 
-class DayCountScreen extends State<MyCustomForm> {
+class DayCountScreen extends State<DayCountFormState> {
   final _formKey = GlobalKey<FormState>();
 
   DateTime selectedDate = DateTime.now();
+
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -96,10 +97,11 @@ class DayCountScreen extends State<MyCustomForm> {
                               print('change $date');
                             }, onConfirm: (date) {
                               print('confirm $date');
+                              selectedDate = date;
                             }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                       child: Text(
-                        'Select Date',
+                        'Date: $selectedDate.toIso8601String()',
                         style: TextStyle(
                             fontFamily: 'OpenSans',
                             fontSize: 24
