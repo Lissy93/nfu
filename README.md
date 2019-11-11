@@ -1,8 +1,7 @@
 
 # NFU - A Day Count App (for Not Fucking Up)
 
-A Flutter app for Android and iOS. What ever your aiming for, this day counting app
-will keep track of how long you&#x27;ve kept going for (aka Not Fucked Up).
+> A Flutter app for Android and iOS. What ever your aiming for, this day counting app will keep track of how long you&#x27;ve kept going for (aka Not Fucked Up).
 
 
 
@@ -13,7 +12,7 @@ SCREENSHOTS
 
 ## About
 
-First off- There are plenty of goal tracking, self-improvement and habit apps already out there, so if your
+First off, there are plenty of goal tracking, self-improvement and habit apps already out there, so if your
 looking for something with a bunch of features check out: **Habit Tracker** ([Android][habbit-tracker-android]),
 **Habitify** ([Android][habitify-android] | [iOS][habitify-ios]),  **Productive** ([Android][productive-android] |
 [iOS][productive-ios]), **Habit** ([iOS][habit-ios]), **Done** ([iOS][done-ios]) or **Loop** ([Andoid][loop-android]).
@@ -22,14 +21,15 @@ looking for something with a bunch of features check out: **Habit Tracker** ([An
 This app is a little different, the goal here was for you to spend as little time as possible using it.
 And so instead of daily recoding your success or failure, you just reset the streak if you f*ck up.
 It allows you to really quickly and easily keep track of how many days, you've kept going for 
-(such as number of days smoke-free, sober, or whatever else you'd like to measure time for.
+(such as number of days smoke-free, sober, or whatever else you'd like to measure days for).
 
 
 ---
 
 ## Developing
 
-This app has a fairly small code base, and it's set up in the standard way
+Fairly small code base, and it's structured in the standard sorta way. Uses **Flutter SDK V2.1.0 - V3.0.0**.
+
 
 
 #### Set Up Guide
@@ -37,10 +37,8 @@ This app has a fairly small code base, and it's set up in the standard way
 - Get the Code: `git clone https://github.com/Lissy93/nfu.git` then `cd nfu`
 - Grab the dependencies `flutter pub get`
 - To keep the source code synced, you can `flutter packages pub run build_runner watch`
-- Easiest way to build and develop is with Android Studio. But you can of course use your favourite editor along with the Flutter CLI
+- Then use Android Studio or your favourite editor along with the Flutter CLI to develop
 
-
-It's using the Flutter SDK,  and supports versions between 2.1.0  and 3.0.0.
 For more info, check out the [Flutter docs](https://flutter.dev/docs), which are actually pretty awesome.
 
 
@@ -93,21 +91,25 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[![mit-license-alicia-sykes](https://lh4.googleusercontent.com/qErn9m3jDoU71pB6EiP5QaYXuDhFtIX-TJz8IqXzWUzwuvjEzTndKWl7_opuSi36suzVT9WzHz33xQ=w1865-h982)](https://gist.github.com/Lissy93/143d2ee01ccc5c052a17)
+[![mit-license-alicia-sykes][license-img]][license-as]
 
 
 
-#### Disclaimer
+### Disclaimer
 *There are no guarantees for the workingness of anything here 
 (I mean, it works fine on my machine lol, and it is tested and all), 
 but basically I cannot be held responsible for anything related related to this.*
 
 *I code stuff just for the love of it, and not to earn anything. It's all open sourced, 
 so that if any of you want to- you can use any parts of this project for whatever you like.
-But I would be grateful if you didn't deploy the whole project as it is, and pass it off as your own work.*
+**But I would be grateful if you didn't deploy the whole project as it is, and pass it off as your own work**.*
 
-***Legal info:** [https://aliciasykes.com/legal](https://aliciasykes.com/legal).*
+**Legal info:** [https://aliciasykes.com/legal][legal-info].
 
+[//]: # (Links to legal and licensing)
+[license-as]: https://gist.github.com/Lissy93/143d2ee01ccc5c052a17
+[license-img]: https://lh6.googleusercontent.com/OiYcw9WstZ8jHptCpJKE6ZZ7SgVAX3Lk7Xum_e-Bp1z455OljCJlVI9WvTwVv2qrNebDf3vnjqn76Q=w1865-h982
+[legal-info]: https://aliciasykes.com/legal
 
 [//]: # (Links to better apps than this one)
 [habbit-tracker-android]: https://play.google.com/store/apps/details?id=com.oristats.habitbull

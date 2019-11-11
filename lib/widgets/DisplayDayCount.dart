@@ -133,6 +133,10 @@ Widget _buildOptionsButtonRowWidget() {
   );
 }
 
+class DayCountFormWidget extends State<DayCountFormState> {
+  @override
+  Widget build(BuildContext context) {}
+}
 
 void _showEditDialog() {
   showDialog(
