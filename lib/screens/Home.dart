@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import '../screens/DayCountScreen.dart';
+import '../screens/DayCountAddEdit.dart';
 import '../models/DayCountModel.dart';
 import '../util/Database.dart';
 import '../widgets/DisplayDayCount.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage(BuildContext context, {Key key, this.title}) : super(key: key);
+class NfuHome extends StatefulWidget {
+  NfuHome(BuildContext context, {Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NfuHomeState createState() => _NfuHomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NfuHomeState extends State<NfuHome> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
   navigateToAddNewItem () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyCustomForm()),
+      MaterialPageRoute(builder: (context) => DayCountFormState()),
     );
   }
 

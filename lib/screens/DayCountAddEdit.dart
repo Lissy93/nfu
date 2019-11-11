@@ -13,6 +13,10 @@ class DayCountFormState extends StatefulWidget {
 }
 
 class DayCountScreen extends State<DayCountFormState> {
+
+//  final DayCount currentData;
+//  SecondPage({this.currentData});
+
   final _formKey = GlobalKey<FormState>();
 
   DateTime selectedDate = DateTime.now();
@@ -91,17 +95,18 @@ class DayCountScreen extends State<DayCountFormState> {
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime(2018, 3, 5),
+                            minTime: DateTime(2000, 1, 1),
                             maxTime: new DateTime.now(),
                             onChanged: (date) {
-                              print('change $date');
-                            }, onConfirm: (date) {
-                              print('confirm $date');
-                              selectedDate = date;
-                            }, currentTime: DateTime.now(), locale: LocaleType.en);
+                              setState(() => selectedDate = date);
+                            },
+                            onConfirm: (date) {
+                              setState(() => selectedDate = date);
+                            },
+                            currentTime: selectedDate, locale: LocaleType.en);
                       },
                       child: Text(
-                        'Date: $selectedDate.toIso8601String()',
+                        'Date: $selectedDate',
                         style: TextStyle(
                             fontFamily: 'OpenSans',
                             fontSize: 24

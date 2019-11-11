@@ -3,11 +3,15 @@ import 'package:folding_cell/folding_cell.dart';
 import '../models/DayCountModel.dart';
 import '../util/Database.dart';
 import '../util/Helpers.dart';
+import '../screens/DayCountAddEdit.dart';
 
 DayCount dayCount;
 
+BuildContext currentContext;
+
 Widget displayDayCount(BuildContext context, DayCount dayCountData) {
   dayCount = dayCountData;
+  currentContext = context;
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
 //  var _foldingCellKey = new Key(dayCountData.id.toString());
   return GestureDetector(
@@ -130,6 +134,29 @@ Widget _buildOptionsButtonRowWidget() {
 }
 
 
+void _showEditDialog() {
+  showDialog(
+      context: currentContext,
+      builder: (currentContext) {
+        return AlertDialog(
+          title: Text('Edit Target'),
+          content: DayCountFormState(),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () {
+                },
+                child: Text('Close')),
+            FlatButton(
+              onPressed: () {
+                print('HelloWorld!');
+              },
+              child: Text('Print HelloWorld!'),
+            )
+          ],
+        );
+      });
+}
+
 deleteItem(){
   DBProvider.db.deleteDayCount(0);
 ////          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
@@ -138,7 +165,7 @@ deleteItem(){
 }
 
 openEdit() {
-  print('Open Edit Tapped');
+  _showEditDialog();
 }
 
 resetDays() {
