@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+import '../util/Database.dart';
 import '../form/TargetNameInput.dart';
 import '../form/TargetDateInput.dart';
 //import '../form/TargetSubmitButton.dart';
@@ -44,11 +45,14 @@ class DayCountScreen extends State<DayCountFormState> {
     setState(() => selectedDate = newDate);
   }
 
-  handleSubmit () {
+  handleSubmit () async {
     if (_formKey.currentState.validate()) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text('Processing Data'))
-      );
+      print('Submit Action Called');
+//      await DBProvider.db.deleteAll();
+      var dayCountData = DayCount(title: "It Worked!!", date: 1562147307);
+      DBProvider.db.deleteAll();
+      await DBProvider.db.insertDayCount(dayCountData);
+      setState(() {});
     }
   }
 
@@ -66,11 +70,7 @@ class DayCountScreen extends State<DayCountFormState> {
           elevation: 4.0,
           splashColor: Colors.cyanAccent,
           onPressed: () {
-            if (_formKey.currentState.validate()) {
-              Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text('Processing Data'))
-              );
-            }
+            handleSubmit();
           },
           child: Text(
             'Save',
@@ -86,6 +86,7 @@ class DayCountScreen extends State<DayCountFormState> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Add new Target'),
       ),
