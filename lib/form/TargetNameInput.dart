@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// The InputField for the Create and Edit a Target forms
-Widget targetNameInput() {
+Widget targetNameInput(TextEditingController targetNameController) {
   return SizedBox(
     width: double.infinity,
     height: 60,
     child:
     new TextFormField(
+      controller: targetNameController,
       decoration: new InputDecoration(
         labelText: "Pick a name for your target",
         fillColor: Colors.white,
@@ -15,8 +16,8 @@ Widget targetNameInput() {
           borderSide: new BorderSide(
           ),
         ),
-        //fillColor: Colors.green
       ),
+      keyboardType: TextInputType.text,
       validator: (val) {
         if(val.length==0) {
           return 'Target name cannot be empty';
@@ -24,7 +25,6 @@ Widget targetNameInput() {
           return null;
         }
       },
-      keyboardType: TextInputType.emailAddress,
       style: new TextStyle(
         fontFamily: 'OpenSans',
         fontSize: 24,

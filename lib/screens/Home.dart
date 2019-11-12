@@ -22,12 +22,6 @@ class _NfuHomeState extends State<NfuHome> {
     });
   }
 
-  // data for testing
-  List<DayCount> testDayCounts = [
-    DayCount(title: "Raouf", date: 1562147307,),
-    DayCount(title: "Zaki", date: 1561974507,),
-  ];
-
   navigateToAddNewItem () {
     Navigator.push(
       context,

@@ -24,9 +24,14 @@ class DayCountScreen extends State<DayCountFormState> {
 //  SecondPage({this.currentData});
 
   final _formKey = GlobalKey<FormState>();
-
   DateTime selectedDate = DateTime.now();
+  final targetNameController = TextEditingController();
 
+  @override
+  void dispose() {
+    targetNameController.dispose();
+    super.dispose();
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -47,10 +52,9 @@ class DayCountScreen extends State<DayCountFormState> {
 
   handleSubmit () async {
     if (_formKey.currentState.validate()) {
-      print('Submit Action Called');
-//      await DBProvider.db.deleteAll();
-      var dayCountData = DayCount(title: "It Worked!!", date: 1562147307);
-      DBProvider.db.deleteAll();
+      var targetName = targetNameController.text;
+      var targetDate = selectedDate.millisecondsSinceEpoch;
+      var dayCountData = DayCount(title: targetName, date: targetDate);
       await DBProvider.db.insertDayCount(dayCountData);
       setState(() {});
     }
@@ -99,7 +103,7 @@ class DayCountScreen extends State<DayCountFormState> {
               child: Column(
                 children: <Widget>[
                 Padding (padding: EdgeInsets.all(6)),
-                  targetNameInput(),
+                  targetNameInput(targetNameController),
                   Padding (padding: EdgeInsets.all(12)),
                   targetDateInput(context, selectedDate, updateDateState),
                   Padding (padding: EdgeInsets.all(12)),

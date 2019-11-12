@@ -1,5 +1,5 @@
 
-int makeDayCountFromDate(int timestamp) {
+int makeDayCountFromDate(DateTime timestamp) {
   return 5;
 }
 

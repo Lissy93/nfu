@@ -77,7 +77,7 @@ Widget _buildDateDisplayWidget(context, bool open) {
             ),
           ),
             Text(
-              open? makeReadableDateFromDate(2001) : makeDayCountFromDate(2001).toString()+" Days",
+              open? makeReadableDateFromDate(2001) : makeDayCountFromDate(DateTime.now()).toString()+" Days",
               style: TextStyle(
                 color: Colors.deepPurple[100],
                 fontFamily: 'OpenSans',

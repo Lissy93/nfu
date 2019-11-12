@@ -27,7 +27,7 @@ class DBProvider {
           await db.execute("CREATE TABLE DayCount ("
               "id INTEGER PRIMARY KEY,"
               "title TEXT,"
-              "date TEXT"
+              "date DATETIME"
               ")");
         });
   }
