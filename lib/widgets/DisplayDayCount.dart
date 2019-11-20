@@ -9,7 +9,7 @@ DayCount dayCount;
 
 BuildContext currentContext;
 
-Widget displayDayCount(BuildContext context, DayCount dayCountData) {
+Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<ScaffoldState> scaffoldState) {
   dayCount = dayCountData;
   currentContext = context;
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();

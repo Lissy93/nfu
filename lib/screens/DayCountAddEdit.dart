@@ -11,11 +11,23 @@ import '../util/Helpers.dart';
 
 // Create a Form widget.
 class DayCountFormState extends StatefulWidget {
-  bool isEditing;
+  final bool isEditing = false;
+
+  DayCount existingDayCount;
+  GlobalKey<ScaffoldState> scaffoldState;
+
+//  GlobalKey<ScaffoldState> scaffoldState;
+
+  DayCountFormState({
+    Key key,
+    this.scaffoldState
+//    @required this.existingDayCount,
+//    GlobalKey<ScaffoldState> scaffoldState,
+  }) : super(key: key);
+
   @override
-  DayCountScreen createState() {
-    return DayCountScreen();
-  }
+  DayCountScreen createState() => new DayCountScreen(existingDayCount, scaffoldState);
+
 }
 
 class DayCountScreen extends State<DayCountFormState> {
@@ -23,9 +35,17 @@ class DayCountScreen extends State<DayCountFormState> {
 //  final DayCount currentData;
 //  SecondPage({this.currentData});
 
+  DayCount existingDayCount;
+  GlobalKey<ScaffoldState> scaffoldState;
+
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   final targetNameController = TextEditingController();
+
+  DayCountScreen(this.existingDayCount, this.scaffoldState){
+    print('Constructor Called in DayCountScreen');
+    print(this.scaffoldState);
+  }
 
   @override
   void dispose() {
@@ -52,11 +72,25 @@ class DayCountScreen extends State<DayCountFormState> {
 
   handleSubmit () async {
     if (_formKey.currentState.validate()) {
+      // Get the data: Target name and date
       var targetName = targetNameController.text;
       var targetDate = selectedDate.millisecondsSinceEpoch;
       var dayCountData = DayCount(title: targetName, date: targetDate);
-      await DBProvider.db.insertDayCount(dayCountData);
-      setState(() {});
+
+      // Hit the insert method of the database controller
+//      await DBProvider.db.insertDayCount(dayCountData);
+
+      // Indicate success by popping open a snackbar
+//      final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+//      Scaffold.of(context).showSnackBar(snackBar);
+
+
+      this.scaffoldState.currentState.showSnackBar(new SnackBar(content: new Text('Awesome!!')));
+
+
+      // Reset the state, and navigate back to the last screen
+//      setState(() {});
+//      Navigator.pop(context);
     }
   }
 

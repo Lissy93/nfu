@@ -14,24 +14,23 @@ class NfuHome extends StatefulWidget {
 }
 
 class _NfuHomeState extends State<NfuHome> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
   navigateToAddNewItem () {
+    print('original scaffold state');
+    print(scaffoldState);
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DayCountFormState()),
+      MaterialPageRoute(builder: (context) => DayCountFormState(scaffoldState: scaffoldState)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldState,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -49,7 +48,7 @@ class _NfuHomeState extends State<NfuHome> {
                   onDismissed: (direction) {
                     // DBProvider.db.deleteClient(item.id);
                   },
-                  child: displayDayCount(context, dayCountData),
+                  child: displayDayCount(context, dayCountData, scaffoldState),
                 );
               },
             );
