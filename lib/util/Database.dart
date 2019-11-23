@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import '../models/DayCountModel.dart';
 
 class DBProvider {
+
   DBProvider._();
 
   static final DBProvider db = DBProvider._();
@@ -19,6 +20,7 @@ class DBProvider {
     return _database;
   }
 
+  /// Creates a new database, initialising it with empty DayCount table
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "TestDB.db");
@@ -29,9 +31,11 @@ class DBProvider {
               "title TEXT,"
               "date DATETIME"
               ")");
-        });
+        }
+      );
   }
 
+  /// Adds a given DayCount record into the database
   insertDayCount(DayCount newDayCount) async {
     final db = await database;
     //get the biggest id in the table
@@ -46,6 +50,7 @@ class DBProvider {
     return raw;
   }
 
+  /// Updates a given DayCount record in the database
   updateDayCount(DayCount newDayCount) async {
     final db = await database;
     var res = await db.update("DayCount", newDayCount.toMap(),
@@ -53,12 +58,14 @@ class DBProvider {
     return res;
   }
 
+  /// Returns a given DayCount, specified by ID from the database
   getDayCount(int id) async {
     final db = await database;
     var res = await db.query("DayCount", where: "id = ?", whereArgs: [id]);
     return res.isNotEmpty ? DayCount.fromMap(res.first) : null;
   }
 
+  /// Returns all DayCount records from the database
   Future<List<DayCount>> getAllDayCounts() async {
     final db = await database;
     var res = await db.query("DayCount");
@@ -67,11 +74,13 @@ class DBProvider {
     return list;
   }
 
+  /// Deletes a given DayCount record from the database
   deleteDayCount(int id) async {
     final db = await database;
     return db.delete("DayCount", where: "id = ?", whereArgs: [id]);
   }
 
+  /// Deletes ALL DayCount records from the database
   deleteAll() async {
     final db = await database;
     db.rawDelete("DELETE FROM DayCount");
