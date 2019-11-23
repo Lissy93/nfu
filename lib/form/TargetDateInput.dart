@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+import '../util/Helpers.dart';
+
 ///The Date Spinner and Label used in the Create and Edit a Target forms
 Widget targetDateInput(BuildContext context, DateTime initialDate, Function updateDate) {
   var selectedDate = initialDate;
@@ -31,7 +33,7 @@ Widget targetDateInput(BuildContext context, DateTime initialDate, Function upda
             currentTime: selectedDate, locale: LocaleType.en);
       },
       child: Text(
-        'Date: $selectedDate',
+        'Date: '+makeReadableDateFromDate(selectedDate.millisecondsSinceEpoch),
         style: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 24
