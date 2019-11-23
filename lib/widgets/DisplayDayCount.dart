@@ -49,6 +49,10 @@ Widget _buildFrontWidget(context) {
       ));
 }
 
+getDayCountText(int date) {
+  return makeDayCountFromDate(new DateTime.fromMillisecondsSinceEpoch(date)).toString()+" Days";
+}
+
 Widget _buildInnerTopWidget(context) {
   return Container(
       color: Color(0xff8A28FF),
@@ -77,7 +81,8 @@ Widget _buildDateDisplayWidget(context, bool open) {
             ),
           ),
             Text(
-              open? makeReadableDateFromDate(2001) : makeDayCountFromDate(DateTime.now()).toString()+" Days",
+//            dayCount.date.toString(),
+              open? makeReadableDateFromDate(dayCount.date) : getDayCountText(dayCount.date),
               style: TextStyle(
                 color: Colors.deepPurple[100],
                 fontFamily: 'OpenSans',
