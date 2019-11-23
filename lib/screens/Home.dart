@@ -18,9 +18,6 @@ class _NfuHomeState extends State<NfuHome> {
   final GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
   navigateToAddNewItem () {
-    print('original scaffold state');
-    print(scaffoldState);
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => DayCountFormState(scaffoldState: scaffoldState)),

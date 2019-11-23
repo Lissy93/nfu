@@ -42,10 +42,7 @@ class DayCountScreen extends State<DayCountFormState> {
   DateTime selectedDate = DateTime.now();
   final targetNameController = TextEditingController();
 
-  DayCountScreen(this.existingDayCount, this.scaffoldState){
-    print('Constructor Called in DayCountScreen');
-    print(this.scaffoldState);
-  }
+  DayCountScreen(this.existingDayCount, this.scaffoldState);
 
   @override
   void dispose() {
@@ -78,19 +75,16 @@ class DayCountScreen extends State<DayCountFormState> {
       var dayCountData = DayCount(title: targetName, date: targetDate);
 
       // Hit the insert method of the database controller
-//      await DBProvider.db.insertDayCount(dayCountData);
+      await DBProvider.db.insertDayCount(dayCountData);
 
       // Indicate success by popping open a snackbar
-//      final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
-//      Scaffold.of(context).showSnackBar(snackBar);
-
-
-      this.scaffoldState.currentState.showSnackBar(new SnackBar(content: new Text('Awesome!!')));
+      final snackBar = new SnackBar(content: new Text('\'$targetName\' has been added'));
+      this.scaffoldState.currentState.showSnackBar(snackBar);
 
 
       // Reset the state, and navigate back to the last screen
-//      setState(() {});
-//      Navigator.pop(context);
+      setState(() {});
+      Navigator.pop(context);
     }
   }
 
