@@ -108,7 +108,7 @@ so that if any of you want to- you can use any parts of this project for whateve
 
 [//]: # (Links to legal and licensing)
 [license-as]: https://gist.github.com/Lissy93/143d2ee01ccc5c052a17
-[license-img]: https://lh6.googleusercontent.com/OiYcw9WstZ8jHptCpJKE6ZZ7SgVAX3Lk7Xum_e-Bp1z455OljCJlVI9WvTwVv2qrNebDf3vnjqn76Q=w1865-h982
+[license-img]: https://user-images.githubusercontent.com/1862727/68531648-69ef4200-030c-11ea-8d48-74af7a2d8304.png
 [legal-info]: https://aliciasykes.com/legal
 
 [//]: # (Links to better apps than this one)
