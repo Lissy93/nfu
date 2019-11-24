@@ -24,7 +24,6 @@ class _NfuHomeState extends State<NfuHome> {
   }
 
   updateState() {
-    print('Updating State.....');
     setState(() {});
   }
 

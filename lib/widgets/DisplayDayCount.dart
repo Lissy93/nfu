@@ -4,6 +4,7 @@ import '../models/DayCountModel.dart';
 import '../util/Database.dart';
 import '../util/Helpers.dart';
 import '../screens/DayCountAddEdit.dart';
+import '../form/ConfirmationAlerts.dart';
 
 
 DayCount dayCount;
@@ -134,8 +135,8 @@ Widget _buildOptionsButtonRowWidget(DayCount dayCount) {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _buildOptionsButtonWidget('Edit', Icons.edit, openEdit),
-        _buildOptionsButtonWidget('Reset', Icons.update, () => showResetDialog(dayCount)),
-        _buildOptionsButtonWidget('Delete', Icons.delete, deleteItem),
+        _buildOptionsButtonWidget('Reset', Icons.update, () => showResetDialog(dayCount, currentContext, resetDays)),
+        _buildOptionsButtonWidget('Delete', Icons.delete, () => showDeleteDialog(dayCount, currentContext, deleteItem)),
       ],
     )
   );
@@ -169,63 +170,34 @@ void _showEditDialog() {
       });
 }
 
-Future<void> showResetDialog(DayCount dayCount) async {
-  final todaysDate = makeReadableDateFromDate(new DateTime.now().millisecondsSinceEpoch);
-  return showDialog<void>(
-    context: currentContext,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Reset this target?'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Doing this will the date of this target to $todaysDate, and the day count back to 0\n'),
-              Text('Alternativley, you can set to a different date or modify details, by tapping the Edit button'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('No, Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          FlatButton(
-            child: Text('Yes, Reset Target'),
-            onPressed: () {
-             resetDays(dayCount);
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
 
-deleteItem(){
-  DBProvider.db.deleteDayCount(0);
-////          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
-////          await DBProvider.db.insertDayCount(rnd);
-//          setState(() {});
+/// Calls to DB to delete a given daycount, and calls to update UI
+deleteItem(DayCount dayCountToDelete){
+  DBProvider.db.deleteDayCount(dayCountToDelete.id);
+  updateUiAfterChange('Target: \''+ dayCountToDelete.title+'\' has been deleted');
 }
 
 openEdit() {
   _showEditDialog();
 }
 
+/// Sets the current date of a selected record to Today, then updates the UI
 resetDays(DayCount dayCountToUpdate) {
   // Make the Update
   dayCountToUpdate.date = new DateTime.now().millisecondsSinceEpoch;
   DBProvider.db.updateDayCount(dayCountToUpdate);
 
+  updateUiAfterChange('Target: \''+ dayCountToUpdate.title+'\' has been reset to today');
+}
+
+/// Closes dialog, show success snackbar and updates the parent state
+updateUiAfterChange(String successMsg) {
   // Close the dialog
   Navigator.of(currentContext).pop();
 
   // Show a success message
   final snackBar = SnackBar(
-      content: Text('Target: \''+ dayCountToUpdate.title+'\' has been reset to today')
+      content: Text(successMsg)
   );
   Scaffold.of(currentContext).showSnackBar(snackBar);
 
