@@ -5,13 +5,17 @@ import '../util/Database.dart';
 import '../util/Helpers.dart';
 import '../screens/DayCountAddEdit.dart';
 
+
 DayCount dayCount;
 
 BuildContext currentContext;
 
-Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<ScaffoldState> scaffoldState) {
+Function parentUpdate;
+
+Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<ScaffoldState> scaffoldState, Function updateState) {
   dayCount = dayCountData;
   currentContext = context;
+  parentUpdate = updateState;
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
 //  var _foldingCellKey = new Key(dayCountData.id.toString());
   return GestureDetector(
@@ -25,7 +29,7 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<Sc
           key: _foldingCellKey,
           frontWidget: _buildFrontWidget(context),
           innerTopWidget: _buildInnerTopWidget(context),
-          innerBottomWidget: _buildOptionsButtonRowWidget(),
+          innerBottomWidget: _buildOptionsButtonRowWidget(dayCount),
           cellSize: Size(MediaQuery.of(context).size.width, 125),
           padding: EdgeInsets.all(15),
           animationDuration: Duration(milliseconds: 300),
@@ -81,7 +85,6 @@ Widget _buildDateDisplayWidget(context, bool open) {
             ),
           ),
             Text(
-//            dayCount.date.toString(),
               open? makeReadableDateFromDate(dayCount.date) : getDayCountText(dayCount.date),
               style: TextStyle(
                 color: Colors.deepPurple[100],
@@ -123,7 +126,7 @@ Widget _buildOptionsButtonWidget(String text, IconData icon, Function action) {
   );
 }
 
-Widget _buildOptionsButtonRowWidget() {
+Widget _buildOptionsButtonRowWidget(DayCount dayCount) {
   return Container(
     color: Colors.blueGrey[100],
     alignment: Alignment.center,
@@ -131,7 +134,7 @@ Widget _buildOptionsButtonRowWidget() {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _buildOptionsButtonWidget('Edit', Icons.edit, openEdit),
-        _buildOptionsButtonWidget('Reset', Icons.update, resetDays),
+        _buildOptionsButtonWidget('Reset', Icons.update, () => showResetDialog(dayCount)),
         _buildOptionsButtonWidget('Delete', Icons.delete, deleteItem),
       ],
     )
@@ -166,6 +169,41 @@ void _showEditDialog() {
       });
 }
 
+Future<void> showResetDialog(DayCount dayCount) async {
+  final todaysDate = makeReadableDateFromDate(new DateTime.now().millisecondsSinceEpoch);
+  return showDialog<void>(
+    context: currentContext,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Reset this target?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Doing this will the date of this target to $todaysDate, and the day count back to 0\n'),
+              Text('Alternativley, you can set to a different date or modify details, by tapping the Edit button'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('No, Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text('Yes, Reset Target'),
+            onPressed: () {
+             resetDays(dayCount);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 deleteItem(){
   DBProvider.db.deleteDayCount(0);
 ////          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
@@ -177,6 +215,20 @@ openEdit() {
   _showEditDialog();
 }
 
-resetDays() {
+resetDays(DayCount dayCountToUpdate) {
+  // Make the Update
+  dayCountToUpdate.date = new DateTime.now().millisecondsSinceEpoch;
+  DBProvider.db.updateDayCount(dayCountToUpdate);
 
+  // Close the dialog
+  Navigator.of(currentContext).pop();
+
+  // Show a success message
+  final snackBar = SnackBar(
+      content: Text('Target: \''+ dayCountToUpdate.title+'\' has been reset to today')
+  );
+  Scaffold.of(currentContext).showSnackBar(snackBar);
+
+  // Update the parent state
+  parentUpdate();
 }

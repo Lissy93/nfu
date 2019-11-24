@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import '../screens/DayCountAddEdit.dart';
 import '../models/DayCountModel.dart';
 import '../util/Database.dart';
@@ -24,6 +23,11 @@ class _NfuHomeState extends State<NfuHome> {
     );
   }
 
+  updateState() {
+    print('Updating State.....');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +49,7 @@ class _NfuHomeState extends State<NfuHome> {
                   onDismissed: (direction) {
                     // DBProvider.db.deleteClient(item.id);
                   },
-                  child: displayDayCount(context, dayCountData, scaffoldState),
+                  child: displayDayCount(context, dayCountData, scaffoldState, updateState),
                 );
               },
             );
@@ -60,7 +64,7 @@ class _NfuHomeState extends State<NfuHome> {
 //          DBProvider.db.deleteAll();
 //          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
 //          await DBProvider.db.insertDayCount(rnd);
-//          setState(() {});
+          setState(() {});
           navigateToAddNewItem();
 
         },
