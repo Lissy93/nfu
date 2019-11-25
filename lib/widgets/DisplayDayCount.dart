@@ -153,7 +153,7 @@ void _showEditDialog() {
       builder: (currentContext) {
         return AlertDialog(
           title: Text('Edit Target'),
-          content: DayCountFormState(),
+          content: DayCountFormState(isEditing: true),
           actions: <Widget>[
             FlatButton(
                 onPressed: () {

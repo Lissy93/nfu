@@ -19,7 +19,8 @@ class _NfuHomeState extends State<NfuHome> {
   navigateToAddNewItem () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DayCountFormState(scaffoldState: scaffoldState)),
+      MaterialPageRoute(builder: (context) =>
+          DayCountFormState(scaffoldState: scaffoldState, isEditing: false,)),
     );
   }
 

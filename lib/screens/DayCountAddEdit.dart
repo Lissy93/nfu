@@ -11,22 +11,21 @@ import '../util/Helpers.dart';
 
 // Create a Form widget.
 class DayCountFormState extends StatefulWidget {
-  final bool isEditing = false;
 
+  bool isEditing = false;
   DayCount existingDayCount;
   GlobalKey<ScaffoldState> scaffoldState;
 
-//  GlobalKey<ScaffoldState> scaffoldState;
-
   DayCountFormState({
     Key key,
-    this.scaffoldState
-//    @required this.existingDayCount,
+    this.scaffoldState,
+    this.isEditing
+//    this.existingDayCount,
 //    GlobalKey<ScaffoldState> scaffoldState,
   }) : super(key: key);
 
   @override
-  DayCountScreen createState() => new DayCountScreen(existingDayCount, scaffoldState);
+  DayCountScreen createState() => new DayCountScreen(existingDayCount, scaffoldState, isEditing);
 
 }
 
@@ -37,12 +36,15 @@ class DayCountScreen extends State<DayCountFormState> {
 
   DayCount existingDayCount;
   GlobalKey<ScaffoldState> scaffoldState;
+  bool isEditing;
 
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   final targetNameController = TextEditingController();
 
-  DayCountScreen(this.existingDayCount, this.scaffoldState);
+  DayCountScreen(this.existingDayCount, this.scaffoldState, this.isEditing){
+   print('isEditing? $isEditing');
+  }
 
   @override
   void dispose() {
