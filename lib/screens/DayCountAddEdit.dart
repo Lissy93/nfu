@@ -11,16 +11,18 @@ class DayCountFormState extends StatefulWidget {
   bool isEditing = false;
   DayCount existingDayCount;
   GlobalKey<ScaffoldState> scaffoldState;
+  Function doneFunction;
 
   DayCountFormState({
     Key key,
     this.isEditing,
     this.existingDayCount,
     this.scaffoldState,
+    this.doneFunction,
   }) : super(key: key);
 
   @override
-  DayCountScreen createState() => new DayCountScreen(isEditing, existingDayCount, scaffoldState);
+  DayCountScreen createState() => new DayCountScreen(isEditing, existingDayCount, scaffoldState, doneFunction);
 
 }
 
@@ -29,12 +31,16 @@ class DayCountScreen extends State<DayCountFormState> {
   bool isEditing;
   DayCount existingDayCount;
   GlobalKey<ScaffoldState> scaffoldState;
+  Function doneFunction;
 
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   final targetNameController = TextEditingController();
+  int currentDayCountId;
 
-  DayCountScreen(this.isEditing, this.existingDayCount, this.scaffoldState, );
+  DayCountScreen(this.isEditing, this.existingDayCount, this.scaffoldState, this.doneFunction ){
+    addInitialValues();
+  }
 
   @override
   void dispose() {
@@ -42,11 +48,21 @@ class DayCountScreen extends State<DayCountFormState> {
     super.dispose();
   }
 
+  /// If editing, then populate title and date with existing values
+  addInitialValues () {
+    if (isEditing) {
+      currentDayCountId = existingDayCount.id;
+      targetNameController.text = existingDayCount.title;
+      selectedDate = new DateTime.fromMillisecondsSinceEpoch(existingDayCount.date);
+    }
+  }
+
   updateDateState (DateTime newDate) {
     setState(() => selectedDate = newDate);
   }
 
   handleSubmit () async {
+
     if (_formKey.currentState.validate()) {
       // Get the data: Target name and date
       var targetName = targetNameController.text;
@@ -55,20 +71,19 @@ class DayCountScreen extends State<DayCountFormState> {
 
       // Checks if updating an existing record, or creating a new one, then hit the DB
       if (isEditing) {
+        dayCountData.id = currentDayCountId;
         await DBProvider.db.updateDayCount(dayCountData);
+        doneFunction(dayCountData.title+ ' has been updated');
       } else {
         await DBProvider.db.insertDayCount(dayCountData);
+
+        // Indicate success by popping open a snackbar
+        final snackBar = new SnackBar(content: new Text('\'$targetName\' has been added'));
+        this.scaffoldState.currentState.showSnackBar(snackBar);
+
+        // Reset the state, and navigate back to the last screen
+        Navigator.pop(context);
       }
-
-
-      // Indicate success by popping open a snackbar
-      final snackBar = new SnackBar(content: new Text('\'$targetName\' has been added'));
-      this.scaffoldState.currentState.showSnackBar(snackBar);
-
-
-      // Reset the state, and navigate back to the last screen
-      setState(() {});
-      Navigator.pop(context);
     }
   }
 
@@ -102,11 +117,6 @@ class DayCountScreen extends State<DayCountFormState> {
   @override
   Widget build(BuildContext context) {
 
-    // If editing, then populate title and date with existing values
-    if (isEditing) {
-      targetNameController.text = existingDayCount.title;
-      selectedDate = new DateTime.fromMillisecondsSinceEpoch(existingDayCount.date);
-    }
     final double paddingValue = isEditing? 2 : 24;
     final double maxHeight = isEditing? 300 : 600;
 

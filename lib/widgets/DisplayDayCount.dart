@@ -6,20 +6,21 @@ import '../util/Helpers.dart';
 import '../screens/DayCountAddEdit.dart';
 import '../form/ConfirmationAlerts.dart';
 
-
 DayCount dayCount;
-
 BuildContext currentContext;
+Function parentUpdate; // Stores reference to a StateUpdate function in the Parent view
 
-Function parentUpdate;
-
-Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<ScaffoldState> scaffoldState, Function updateState) {
+Widget displayDayCount(
+    BuildContext context,
+    DayCount dayCountData,
+    GlobalKey<ScaffoldState> scaffoldState,
+    Function updateState
+  ) {
   dayCount = dayCountData;
   currentContext = context;
   parentUpdate = updateState;
 
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
-//  var _foldingCellKey = new Key(dayCountData.id.toString());
   return GestureDetector(
       onTap: () {
         _foldingCellKey?.currentState?.toggleFold();
@@ -36,8 +37,6 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<Sc
           padding: EdgeInsets.all(15),
           animationDuration: Duration(milliseconds: 300),
           borderRadius: 5,
-          onOpen: () => print('cell opened'+dayCount.id.toString()),
-          onClose: () => print('cell closed')
         ),
     )
   );
@@ -102,8 +101,8 @@ Widget _buildDateDisplayWidget(context, bool open) {
                 fontSize: 14,
               ),
           ),
-    ],
-  ),
+        ],
+      ),
   );
 }
 
@@ -136,7 +135,7 @@ Widget _buildOptionsButtonRowWidget(DayCount dayCount, GlobalKey<ScaffoldState> 
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _buildOptionsButtonWidget('Reset', Icons.update, () => showResetDialog(dayCount, currentContext, resetDays)),
-        _buildOptionsButtonWidget('Edit', Icons.edit, () => openEdit(scaffoldState)),
+        _buildOptionsButtonWidget('Edit', Icons.edit, () => _showEditDialog(scaffoldState, dayCount)),
         _buildOptionsButtonWidget('Delete', Icons.delete, () => showDeleteDialog(dayCount, currentContext, deleteItem)),
       ],
     )
@@ -148,7 +147,8 @@ class DayCountFormWidget extends State<DayCountFormState> {
   Widget build(BuildContext context) {}
 }
 
-void _showEditDialog(GlobalKey<ScaffoldState> scaffoldState) {
+void _showEditDialog(GlobalKey<ScaffoldState> scaffoldState, DayCount dayCount) {
+  parentUpdate();
   showDialog(
       context: currentContext,
       builder: (currentContext) {
@@ -156,28 +156,14 @@ void _showEditDialog(GlobalKey<ScaffoldState> scaffoldState) {
           title: Text('Edit Target'),
           content: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: DayCountFormState(isEditing: true, existingDayCount: dayCount, scaffoldState: scaffoldState)
+              child: DayCountFormState(isEditing: true, existingDayCount: dayCount, scaffoldState: scaffoldState, doneFunction: updateUiAfterChange)
           ),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
-          actions: <Widget>[
-            FlatButton(
-                onPressed: () {
-                  Navigator.pop(currentContext);
-                },
-                child: Text('Cancel')),
-            FlatButton(
-              onPressed: () {
-                print('HelloWorld!');
-              },
-              child: Text('Save Changes'),
-            )
-          ],
         );
       });
 }
-
 
 /// Calls to DB to delete a given daycount, and calls to update UI
 deleteItem(DayCount dayCountToDelete){
@@ -185,16 +171,11 @@ deleteItem(DayCount dayCountToDelete){
   updateUiAfterChange('Target: \''+ dayCountToDelete.title+'\' has been deleted');
 }
 
-openEdit(GlobalKey<ScaffoldState> scaffoldState) {
-  _showEditDialog(scaffoldState);
-}
-
 /// Sets the current date of a selected record to Today, then updates the UI
 resetDays(DayCount dayCountToUpdate) {
   // Make the Update
   dayCountToUpdate.date = new DateTime.now().millisecondsSinceEpoch;
   DBProvider.db.updateDayCount(dayCountToUpdate);
-
   updateUiAfterChange('Target: \''+ dayCountToUpdate.title+'\' has been reset to today');
 }
 

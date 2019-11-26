@@ -61,14 +61,10 @@ class _NfuHomeState extends State<NfuHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-//          DBProvider.db.deleteAll();
-//          DayCount rnd = testDayCounts[math.Random().nextInt(testDayCounts.length)];
-//          await DBProvider.db.insertDayCount(rnd);
           setState(() {});
           navigateToAddNewItem();
-
         },
-        tooltip: 'Increment',
+        tooltip: 'Add a new target',
         child: Icon(Icons.add),
       ),
     );
