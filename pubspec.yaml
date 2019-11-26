@@ -18,12 +18,22 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.3"
   flutter_test:
     sdk: flutter
 
-flutter:
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon.png"
 
+flutter:
   uses-material-design: true
+  assets:
+    - assets/mipmap-hdpi/ic_launcher.png
+    - assets/icon.png
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

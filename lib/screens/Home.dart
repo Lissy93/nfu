@@ -38,7 +38,7 @@ class _NfuHomeState extends State<NfuHome> {
       body: FutureBuilder<List<DayCount>>(
         future: DBProvider.db.getAllDayCounts(),
         builder: (BuildContext context, AsyncSnapshot<List<DayCount>> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.length > 0) {
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
@@ -55,7 +55,31 @@ class _NfuHomeState extends State<NfuHome> {
             );
           } else {
             print('No data returned');
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'You don\'t have any targets yet\n\nTap the Add button to get started\n\n\n',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.35),
+                          fontSize: 36,
+                          shadows: <Shadow>[
+                            Shadow(
+                              offset: Offset(1,1),
+                              blurRadius: 10.0,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
+                          ],
+                      ),
+                    ),
+                  ],
+              )
+            );
+//            return Center(child: CircularProgressIndicator());
           }
         },
       ),
