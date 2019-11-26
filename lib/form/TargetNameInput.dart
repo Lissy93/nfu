@@ -9,7 +9,7 @@ Widget targetNameInput(TextEditingController targetNameController) {
     new TextFormField(
       controller: targetNameController,
       decoration: new InputDecoration(
-        labelText: "Pick a name for your target",
+        labelText: 'Pick a name for your target',
         fillColor: Colors.white,
         border: new OutlineInputBorder(
           borderRadius: new BorderRadius.circular(25),

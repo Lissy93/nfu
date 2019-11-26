@@ -17,6 +17,7 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<Sc
   dayCount = dayCountData;
   currentContext = context;
   parentUpdate = updateState;
+
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
 //  var _foldingCellKey = new Key(dayCountData.id.toString());
   return GestureDetector(
@@ -30,7 +31,7 @@ Widget displayDayCount(BuildContext context, DayCount dayCountData, GlobalKey<Sc
           key: _foldingCellKey,
           frontWidget: _buildFrontWidget(context),
           innerTopWidget: _buildInnerTopWidget(context),
-          innerBottomWidget: _buildOptionsButtonRowWidget(dayCount),
+          innerBottomWidget: _buildOptionsButtonRowWidget(dayCount, scaffoldState),
           cellSize: Size(MediaQuery.of(context).size.width, 125),
           padding: EdgeInsets.all(15),
           animationDuration: Duration(milliseconds: 300),
@@ -127,15 +128,15 @@ Widget _buildOptionsButtonWidget(String text, IconData icon, Function action) {
   );
 }
 
-Widget _buildOptionsButtonRowWidget(DayCount dayCount) {
+Widget _buildOptionsButtonRowWidget(DayCount dayCount, GlobalKey<ScaffoldState> scaffoldState) {
   return Container(
     color: Colors.blueGrey[100],
     alignment: Alignment.center,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        _buildOptionsButtonWidget('Edit', Icons.edit, openEdit),
         _buildOptionsButtonWidget('Reset', Icons.update, () => showResetDialog(dayCount, currentContext, resetDays)),
+        _buildOptionsButtonWidget('Edit', Icons.edit, () => openEdit(scaffoldState)),
         _buildOptionsButtonWidget('Delete', Icons.delete, () => showDeleteDialog(dayCount, currentContext, deleteItem)),
       ],
     )
@@ -147,23 +148,30 @@ class DayCountFormWidget extends State<DayCountFormState> {
   Widget build(BuildContext context) {}
 }
 
-void _showEditDialog() {
+void _showEditDialog(GlobalKey<ScaffoldState> scaffoldState) {
   showDialog(
       context: currentContext,
       builder: (currentContext) {
         return AlertDialog(
           title: Text('Edit Target'),
-          content: DayCountFormState(isEditing: true),
+          content: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DayCountFormState(isEditing: true, existingDayCount: dayCount, scaffoldState: scaffoldState)
+          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))
+          ),
           actions: <Widget>[
             FlatButton(
                 onPressed: () {
+                  Navigator.pop(currentContext);
                 },
-                child: Text('Close')),
+                child: Text('Cancel')),
             FlatButton(
               onPressed: () {
                 print('HelloWorld!');
               },
-              child: Text('Print HelloWorld!'),
+              child: Text('Save Changes'),
             )
           ],
         );
@@ -177,8 +185,8 @@ deleteItem(DayCount dayCountToDelete){
   updateUiAfterChange('Target: \''+ dayCountToDelete.title+'\' has been deleted');
 }
 
-openEdit() {
-  _showEditDialog();
+openEdit(GlobalKey<ScaffoldState> scaffoldState) {
+  _showEditDialog(scaffoldState);
 }
 
 /// Sets the current date of a selected record to Today, then updates the UI

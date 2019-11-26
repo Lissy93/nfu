@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../util/Database.dart';
 import '../form/TargetNameInput.dart';
 import '../form/TargetDateInput.dart';
-//import '../form/TargetSubmitButton.dart';
-
 import '../models/DayCountModel.dart';
-import '../util/Helpers.dart';
 
 // Create a Form widget.
 class DayCountFormState extends StatefulWidget {
@@ -18,52 +14,33 @@ class DayCountFormState extends StatefulWidget {
 
   DayCountFormState({
     Key key,
+    this.isEditing,
+    this.existingDayCount,
     this.scaffoldState,
-    this.isEditing
-//    this.existingDayCount,
-//    GlobalKey<ScaffoldState> scaffoldState,
   }) : super(key: key);
 
   @override
-  DayCountScreen createState() => new DayCountScreen(existingDayCount, scaffoldState, isEditing);
+  DayCountScreen createState() => new DayCountScreen(isEditing, existingDayCount, scaffoldState);
 
 }
 
 class DayCountScreen extends State<DayCountFormState> {
 
-//  final DayCount currentData;
-//  SecondPage({this.currentData});
-
+  bool isEditing;
   DayCount existingDayCount;
   GlobalKey<ScaffoldState> scaffoldState;
-  bool isEditing;
 
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   final targetNameController = TextEditingController();
 
-  DayCountScreen(this.existingDayCount, this.scaffoldState, this.isEditing){
-   print('isEditing? $isEditing');
-  }
+  DayCountScreen(this.isEditing, this.existingDayCount, this.scaffoldState, );
 
   @override
   void dispose() {
     targetNameController.dispose();
     super.dispose();
   }
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
-  }
-
 
   updateDateState (DateTime newDate) {
     setState(() => selectedDate = newDate);
@@ -76,8 +53,13 @@ class DayCountScreen extends State<DayCountFormState> {
       var targetDate = selectedDate.millisecondsSinceEpoch;
       var dayCountData = DayCount(title: targetName, date: targetDate);
 
-      // Hit the insert method of the database controller
-      await DBProvider.db.insertDayCount(dayCountData);
+      // Checks if updating an existing record, or creating a new one, then hit the DB
+      if (isEditing) {
+        await DBProvider.db.updateDayCount(dayCountData);
+      } else {
+        await DBProvider.db.insertDayCount(dayCountData);
+      }
+
 
       // Indicate success by popping open a snackbar
       final snackBar = new SnackBar(content: new Text('\'$targetName\' has been added'));
@@ -119,29 +101,45 @@ class DayCountScreen extends State<DayCountFormState> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('Add new Target'),
-      ),
-      body:
-        Padding (
-          padding: EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-          child:
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                Padding (padding: EdgeInsets.all(6)),
-                  targetNameInput(targetNameController),
-                  Padding (padding: EdgeInsets.all(12)),
-                  targetDateInput(context, selectedDate, updateDateState),
-                  Padding (padding: EdgeInsets.all(12)),
-                  targetSubmitButton(),
-                ],
-              ),
-            ),
+
+    // If editing, then populate title and date with existing values
+    if (isEditing) {
+      targetNameController.text = existingDayCount.title;
+      selectedDate = new DateTime.fromMillisecondsSinceEpoch(existingDayCount.date);
+    }
+    final double paddingValue = isEditing? 2 : 24;
+    final double maxHeight = isEditing? 300 : 600;
+
+    return new Container(
+        constraints: BoxConstraints(
+          maxHeight: maxHeight,
+          minWidth: 300,
         ),
+        child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: isEditing? null : AppBar(title: Text('Add new Target')),
+        body:
+        Padding (
+          padding: EdgeInsets.symmetric(vertical: paddingValue*2, horizontal: paddingValue),
+          child:
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding (padding: EdgeInsets.all(6)),
+                targetNameInput(targetNameController),
+                Padding (padding: EdgeInsets.all(12)),
+                targetDateInput(context, selectedDate, updateDateState),
+                Padding (padding: EdgeInsets.all(12)),
+                targetSubmitButton(),
+              ],
+            ),
+          ),
+        ),
+      )
     );
+
+
   }
 }
