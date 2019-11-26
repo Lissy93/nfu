@@ -4,8 +4,7 @@
 > A Flutter app for Android and iOS. What ever your aiming for, this day counting app will keep track of how long you&#x27;ve kept going for (aka Not Fucked Up).
 
 
-
-SCREENSHOTS
+![demo-gif](/demo.gif)
 
 
 ---
@@ -96,13 +95,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 
 ### Disclaimer
-*There are no guarantees for the workingness of anything here 
-(I mean, it works fine on my machine lol, and it is tested and all), 
-but basically I cannot be held responsible for anything related related to this.*
+*There are no guarantees for the workingness of anything here.*
 
-*I code stuff just for the love of it, and not to earn anything. It's all open sourced, 
+*I code stuff just for the love of it, and not for anything in return. And it's all open sourced, 
 so that if any of you want to- you can use any parts of this project for whatever you like.
-**But I would be grateful if you didn't deploy the whole project as it is, and pass it off as your own work**.*
+**But I would be grateful if you didn't deploy the whole project as it is, and pass it off as your own work**. Thanks :)*
 
 **Legal info:** [https://aliciasykes.com/legal][legal-info].
 
