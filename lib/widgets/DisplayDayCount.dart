@@ -1,3 +1,6 @@
+/// This file show the a single DayCount, as a funky flip touch card,
+/// as well as common actions: Reset, Edit and Delete
+
 import 'package:flutter/material.dart';
 import 'package:folding_cell/folding_cell.dart';
 import '../models/DayCountModel.dart';
@@ -16,11 +19,13 @@ Widget displayDayCount(
     GlobalKey<ScaffoldState> scaffoldState,
     Function updateState
   ) {
-  dayCount = dayCountData;
+
   currentContext = context;
+  dayCount = dayCountData;
   parentUpdate = updateState;
 
   var _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
+
   return GestureDetector(
       onTap: () {
         _foldingCellKey?.currentState?.toggleFold();
@@ -30,7 +35,7 @@ Widget displayDayCount(
       child:
           SimpleFoldingCell(
           key: _foldingCellKey,
-          frontWidget: _buildFrontWidget(context),
+          frontWidget: _buildOuterTopWidget(context),
           innerTopWidget: _buildInnerTopWidget(context),
           innerBottomWidget: _buildOptionsButtonRowWidget(dayCount, scaffoldState),
           cellSize: Size(MediaQuery.of(context).size.width, 125),
@@ -42,7 +47,15 @@ Widget displayDayCount(
   );
 }
 
-Widget _buildFrontWidget(context) {
+/// From a given date, uses helper function to find days, then appends string
+getDayCountText(int date) {
+  return makeDayCountFromDate(
+      new DateTime.fromMillisecondsSinceEpoch(date)
+  ).toString()+" Days";
+}
+
+/// The topper half of the FoldingCell, shown when it is closed, shows the number of days
+Widget _buildOuterTopWidget(context) {
   return Container(
       color: Color(0xff6200ED),
       alignment: Alignment.center,
@@ -54,10 +67,7 @@ Widget _buildFrontWidget(context) {
       ));
 }
 
-getDayCountText(int date) {
-  return makeDayCountFromDate(new DateTime.fromMillisecondsSinceEpoch(date)).toString()+" Days";
-}
-
+/// The topper half of the FoldingCell, shown once it is open, shows date in full format
 Widget _buildInnerTopWidget(context) {
   return Container(
       color: Color(0xff8A28FF),
@@ -70,6 +80,7 @@ Widget _buildInnerTopWidget(context) {
       ));
 }
 
+/// Shows how long the target has been running for, either in Days or Readable Date
 Widget _buildDateDisplayWidget(context, bool open) {
   return Container(
       alignment: Alignment.center,
@@ -86,7 +97,8 @@ Widget _buildDateDisplayWidget(context, bool open) {
             ),
           ),
             Text(
-              open? makeReadableDateFromDate(dayCount.date) : getDayCountText(dayCount.date),
+              open?
+                makeReadableDateFromDate(dayCount.date) : getDayCountText(dayCount.date),
               style: TextStyle(
                 color: Colors.deepPurple[100],
                 fontFamily: 'OpenSans',
@@ -106,6 +118,7 @@ Widget _buildDateDisplayWidget(context, bool open) {
   );
 }
 
+/// The Option Button, contained in the OptionButtonRowWidget
 Widget _buildOptionsButtonWidget(String text, IconData icon, Function action) {
   return FlatButton(
     onPressed: action,
@@ -120,13 +133,13 @@ Widget _buildOptionsButtonWidget(String text, IconData icon, Function action) {
         Text(
           text,
           style: TextStyle(color: Colors.deepPurple[100]),
-
         )
       ],
     ),
   );
 }
 
+/// The widget containing the Reset, Edit and Delete buttons
 Widget _buildOptionsButtonRowWidget(DayCount dayCount, GlobalKey<ScaffoldState> scaffoldState) {
   return Container(
     color: Colors.blueGrey[100],
@@ -134,9 +147,12 @@ Widget _buildOptionsButtonRowWidget(DayCount dayCount, GlobalKey<ScaffoldState> 
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        _buildOptionsButtonWidget('Reset', Icons.update, () => showResetDialog(dayCount, currentContext, resetDays)),
-        _buildOptionsButtonWidget('Edit', Icons.edit, () => _showEditDialog(scaffoldState, dayCount)),
-        _buildOptionsButtonWidget('Delete', Icons.delete, () => showDeleteDialog(dayCount, currentContext, deleteItem)),
+        _buildOptionsButtonWidget('Reset', Icons.update, () =>
+            showResetDialog(dayCount, currentContext, resetDays)),
+        _buildOptionsButtonWidget('Edit', Icons.edit, () =>
+            _showEditDialog(scaffoldState, dayCount)),
+        _buildOptionsButtonWidget('Delete', Icons.delete, () =>
+            showDeleteDialog(dayCount, currentContext, deleteItem)),
       ],
     )
   );
@@ -147,8 +163,8 @@ class DayCountFormWidget extends State<DayCountFormState> {
   Widget build(BuildContext context) {}
 }
 
+/// Pops open a dialog, with the Edit form in it
 void _showEditDialog(GlobalKey<ScaffoldState> scaffoldState, DayCount dayCount) {
-  parentUpdate();
   showDialog(
       context: currentContext,
       builder: (currentContext) {
@@ -156,7 +172,12 @@ void _showEditDialog(GlobalKey<ScaffoldState> scaffoldState, DayCount dayCount) 
           title: Text('Edit Target'),
           content: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: DayCountFormState(isEditing: true, existingDayCount: dayCount, scaffoldState: scaffoldState, doneFunction: updateUiAfterChange)
+              child: DayCountFormState(
+                  isEditing: true,
+                  existingDayCount: dayCount,
+                  scaffoldState: scaffoldState,
+                  doneFunction: updateUiAfterChange
+                )
           ),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))
@@ -193,3 +214,5 @@ updateUiAfterChange(String successMsg) {
   // Update the parent state
   parentUpdate();
 }
+
+/// Licensed Under MIT, (C) 2019 Alicia Sykes <as@mail.as93.net>

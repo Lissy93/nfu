@@ -36,7 +36,6 @@ Future<void> showResetDialog(DayCount dayCount, BuildContext currentContext, Fun
   );
 }
 
-
 Future<void> showDeleteDialog(DayCount dayCount, BuildContext currentContext, Function actionFunc) async {
   final targetName = dayCount.title;
   return showDialog<void>(

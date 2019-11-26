@@ -5,6 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/DayCountModel.dart';
 
+/// The Database Provider encloses all independent data updates
+/// Licensed Under MIT, (C) 2019 Alicia Sykes <as@mail.as93.net>
+///
 class DBProvider {
 
   DBProvider._();
@@ -13,6 +16,7 @@ class DBProvider {
 
   Database _database;
 
+  /// If there is not yet a database, then create one
   Future<Database> get database async {
     if (_database != null) return _database;
     // if _database is null we instantiate it
