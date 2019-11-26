@@ -22,7 +22,6 @@ And so instead of daily recoding your success or failure, you just reset the str
 It allows you to really quickly and easily keep track of how many days, you've kept going for 
 (such as number of days smoke-free, sober, or whatever else you'd like to measure days for).
 
-
 ---
 
 ## Developing
@@ -92,6 +91,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 [![mit-license-alicia-sykes][license-img]][license-as]
 
+
+![ic_launcher](/assets/icon.png)
 
 
 ### Disclaimer
